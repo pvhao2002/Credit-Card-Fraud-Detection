@@ -1,10 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Credit Card Fraud Detection – Manual Input</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background:#f2f4f7;
+            margin:0; padding:0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 25px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.07);
+        }
+
+        h1 {
+            text-align:center;
+            margin-bottom: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field label {
+            margin-bottom: 4px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .field input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .model-box {
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #eef2ff;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background:#005fcc;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #eef5ff;
+        }
+    </style>
 </head>
+
 <body>
-Hello World!
+
+<div class="container">
+    <h1>Credit Card Fraud Detection – Manual Input</h1>
+
+    <form method="POST">
+
+        <!-- MODEL SELECTION -->
+        <div class="model-box">
+            <h3>Chọn mô hình dự đoán</h3>
+
+            <label>
+                <input type="radio" name="model" value="rf"
+                    {% if selected_model == 'rf' %}checked{% endif %}> Random Forest Classifier
+            </label><br>
+
+            <label>
+                <input type="radio" name="model" value="ada"
+                    {% if selected_model == 'ada' %}checked{% endif %}> AdaBoost Classifier
+            </label><br>
+
+            <label>
+                <input type="radio" name="model" value="cat"
+                    {% if selected_model == 'cat' %}checked{% endif %}> CatBoost Classifier
+            </label>
+        </div>
+
+        <div class="grid-2">
+
+            <!-- TIME -->
+            <div class="field">
+                <label>Time</label>
+                <input type="number" name="Time" step="0.01" required>
+            </div>
+
+            <!-- AMOUNT -->
+            <div class="field">
+                <label>Amount</label>
+                <input type="number" name="Amount" step="0.0001" required>
+            </div>
+
+            <!-- V1 to V28 -->
+            {% for i in range(1,29) %}
+            <div class="field">
+                <label>V{{ i }}</label>
+                <input type="number" name="V{{ i }}" step="0.00000000000000001" required>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button class="btn" type="submit">Predict Fraud</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        <h3>Kết quả:</h3>
+        <p><strong>Phân loại:</strong> {{ prediction }}</p>
+        <p><strong>Xác suất fraud:</strong> {{ probability }}%</p>
+    </div>
+    {% endif %}
+</div>
+
 </body>
 </html>
