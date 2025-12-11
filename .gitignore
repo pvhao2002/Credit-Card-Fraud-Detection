@@ -1,0 +1,4 @@
+.idea
+/app-demo/__pycache__/
+/app-demo/.venv
+creditcard.csv
